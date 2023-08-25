@@ -32,6 +32,6 @@ jobs:
         username: ${{ secrets.SSH_EC2_USER }}
         #username: ${{ secrets.SSH_PRIVATE_KEY }}
         passphrase: ${{ secrets.SSH_PASSPHRASE }}
-        scripts: |
+        script: |
           cd ~/.scripts
           ./docker-ec2-deploy.sh
