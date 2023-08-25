@@ -18,11 +18,11 @@ jobs:
     - name: Running Test
       run: |
         docker-compose exec -T api pytest
-        
+
   deploy:
     name: Deploying on EC2 via SSH
     if: ${{ github.event_name == 'push' }}
-      needs: [built-test]
+      needs: [build-test]
       runs-on: ubuntu-latest
       steps:
       - name: Deploying Applicationon EC2
