@@ -9,8 +9,10 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import os
 from pathlib import Path
+from dotenv import load_dotenv # импортируем библиотеку для работы с файлаом .env
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -18,14 +20,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
+load_dotenv() # запускаем библиотеку
+
+ENV = os.environ.get("ENV")
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-=i4u!h76w2#%4vb-)%@uj-8(=kei%g)i%u12kmu_a#2n$uc%(3'
+SECRET_KEY = os.environ.get(
+    "SECRET_KEY", default="django-insecure-=i4u!h76w2#%4vb-)%@uj-8(=kei%g)i%u12kmu_a#2n$uc%(3"
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False if ENV == "PROD" else True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get ("DJANGO_ALLOWED_HOSTS", "*").split(",")
 
 
 # Application definition
@@ -87,12 +94,12 @@ WSGI_APPLICATION = 'CoreRoot.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'coredb',
-        'USER': 'core',
-        'PASSWORD': 'wCh29&HE&T83',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv("DATABASE_NAME", "coredb"),
+        'USER': os.getenv("DATABASE_USER", "core"),
+        'PASSWORD': os.getenv("DATABASE_PASSWORD", "wCh29&HE&T83"),
+        'HOST': os.environ.get("DATABASE_HOST" ,"localhost"),
+        'PORT': os.getenv ("DATABASE_PORT", "5432"),
     }
 }
 
